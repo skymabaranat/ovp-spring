@@ -1,0 +1,56 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '3.0.2'
+    id 'io.spring.dependency-management' version '1.1.0'
+}
+
+group = 'com.example.springbootcar'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '17'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'io.cucumber:cucumber-java:7.10.1'
+    testImplementation 'io.cucumber:cucumber-junit:7.10.1'
+    testImplementation 'io.cucumber:cucumber-spring:7.10.1'
+    testImplementation 'io.rest-assured:rest-assured:5.3.0'
+    testImplementation 'io.rest-assured:xml-path:5.3.0'
+    testImplementation 'io.rest-assured:json-path:5.3.0'
+    testImplementation 'io.rest-assured:rest-assured-common:5.3.0'
+}
+
+configurations {
+    cucumberRuntime.extendsFrom testImplementation
+}
+
+task cucumberTest() {
+    dependsOn assemble, testClasses
+    doLast {
+        println "Running Cucumber tests"
+        javaexec {
+            systemProperties = ['spring.profiles.active': findProperty("env")?:"local"]
+            main = "io.cucumber.core.cli.Main"
+            classpath = configurations.cucumberRuntime + sourceSets.main.output + sourceSets.test.output
+            environment("env", findProperty("env")?:"local")
+            args = [
+                    '--plugin', 'pretty',
+                    '--plugin', 'html:target/cucumber-report.html',
+                    '--glue', 'com.example.functional',
+                    'src/test/resources']
+            jvmArgs = ['-Dspring.devtools.restart.enabled=false']
+        }
+    }
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
+
+bootJar {
+    enabled = false
+}
