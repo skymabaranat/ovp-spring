@@ -25,14 +25,21 @@ public class CarController {
         return new ResponseEntity<>("OK", HttpStatus.OK);
     }
 
+//    @PostMapping("/cars/admin")
+//    public ResponseEntity<Map<String, String>> saveCar(@RequestBody Car car) {
+//        carRepository.save(car);
+//        return new ResponseEntity<>(Map.of("description", "Database updated"), HttpStatus.CREATED);
+//    }
+
+
     @PostMapping("/cars/admin")
-    public ResponseEntity<Map<String, String>> saveCar(@RequestBody Car car) {
-        carRepository.save(car);
+    public ResponseEntity<Map<String, String>> saveCar(@RequestBody List<Car> car) {
+        carRepository.saveAll(car);
         return new ResponseEntity<>(Map.of("description", "Database updated"), HttpStatus.CREATED);
     }
 
-    @GetMapping("/cars/admin")
-    public List<Car> getCars () {
-        return carRepository.findAll();
-    }
+//    @GetMapping("/cars/admin")
+//    public List<Car> getCars () {
+//        return carRepository.findAll();
+//    }
 }
