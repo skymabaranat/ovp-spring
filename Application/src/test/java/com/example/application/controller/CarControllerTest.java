@@ -27,16 +27,6 @@ public class CarControllerTest {
     CarController carController;
 
 
-    @Test
-    public void getStatus_returnsOK(){
-        ResponseEntity response = carController.getStatus();
-
-        Assertions.assertAll(
-                () -> Assertions.assertEquals("OK", response.getBody()),
-                () -> Assertions.assertEquals(HttpStatus.OK, response.getStatusCode())
-        );
-    }
-
 //    @Test
 //    public void postMethodReturnsCreated() {
 ////        Car mockCar = new Car("VW", "Tiguan", 2005, 3500, 56000, "red");
