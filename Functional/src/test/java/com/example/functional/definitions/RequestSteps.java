@@ -1,9 +1,15 @@
 package com.example.functional.definitions;
 
+import io.cucumber.java.en.And;
+import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.Assertions;
+
+import java.util.List;
+import java.util.Map;
 
 import static io.restassured.RestAssured.given;
 
@@ -21,7 +27,7 @@ public class RequestSteps {
         Assertions.assertEquals(expectedStatusCode, testResponse.getStatusCode());
     }
 
-    @Then("the response body should contain the text {string}")
+    @And("the response body should contain the text {string}")
     public void the_response_body_should_contain_the_text(String expectedResponseBody) {
         Assertions.assertEquals(expectedResponseBody, testResponse.getBody().asString());
     }

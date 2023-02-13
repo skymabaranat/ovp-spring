@@ -1,12 +1,8 @@
 package com.example.application.entities;
+
 import lombok.Data;
-import org.springframework.data.annotation.Id;
 
-import java.util.Objects;
-
-public class Car {
-    @Id
-    public String id;
+public class CarDTO {
     public String brand;
     public String model;
     public int year;
@@ -14,10 +10,12 @@ public class Car {
     public int mileage;
     public String colour;
 
-    public Car() {
+//    no args constructor
+    public CarDTO() {
     }
 
-    public Car(String brand, String model, int year, int price, int mileage, String colour) {
+// all args constructor
+    public CarDTO(String brand, String model, int year, int price, int mileage, String colour) {
         this.brand = brand;
         this.model = model;
         this.year = year;
@@ -25,6 +23,8 @@ public class Car {
         this.mileage = mileage;
         this.colour = colour;
     }
+
+//    Getters and setters
 
     public String getBrand() {
         return brand;
@@ -74,29 +74,6 @@ public class Car {
         this.colour = colour;
     }
 
-    @Override
-    public String toString() {
-        return "Car{" +
-                "brand='" + brand + '\'' +
-                ", model='" + model + '\'' +
-                ", year=" + year +
-                ", price=" + price +
-                ", mileage=" + mileage +
-                ", colour='" + colour + '\'' +
-                '}';
-    }
-
-//    @Override
-//    public boolean equals(Object o) {
-//        if (this == o) return true;
-//        if (o == null || getClass() != o.getClass()) return false;
-//        Car car = (Car) o;
-//        return year == car.year && price == car.price && mileage == car.mileage && Objects.equals(id, car.id) && Objects.equals(brand, car.brand) && Objects.equals(model, car.model) && Objects.equals(colour, car.colour);
-//    }
-//
-//    @Override
-//    public int hashCode() {
-//        return Objects.hash(id, brand, model, year, price, mileage, colour);
-//    }
-
+//  Equals and hash code
 }
+
