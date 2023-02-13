@@ -1,0 +1,13 @@
+{
+  "code": "AttributeMissingException",
+  "message": "The attribute is missing.",
+  "status": 400,
+  "invalidAttributes": {
+    "name": [
+      {
+        "code": "AttributeMissingException",
+        "message": "The attribute is missing."
+      }
+    ]
+  }
+}
