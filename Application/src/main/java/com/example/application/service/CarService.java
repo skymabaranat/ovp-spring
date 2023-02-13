@@ -26,6 +26,11 @@ public class CarService {
     private Car convertToEntity(CarDTO cardto) {
         return this.modelMapper.map(cardto, Car.class);
     }
+
+    private CarDTO convertToDto(Car car) {
+        return this.modelMapper.map(car, CarDTO.class);
+    }
+
     public String generateString() {
         return "OK";
     }
@@ -40,7 +45,9 @@ public class CarService {
         carRepository.saveAll(cars);
     }
 
-    public List<Car> getAllCars (){
-        return this.carRepository.findAll();
+    public List<CarDTO> getAllCars (){
+        return this.carRepository.findAll().stream()
+                .map(this::convertToDto)
+                .collect(Collectors.toList());
     }
 }

@@ -39,12 +39,10 @@ public class CarController {
         return new ResponseEntity<>(Map.of("description", "Database updated"), HttpStatus.CREATED);
     }
 
-    @GetMapping("/cars/admin")
+    @GetMapping("/admin")
     @ResponseBody
     public List<CarDTO> getCars() {
-        List<Car> cars = carService.getAllCars();
-        return cars.stream()
-                .map(this::convertToDto)
-                .collect(Collectors.toList());
+        List<CarDTO> cars = carService.getAllCars();
+        return cars;
     }
 }
