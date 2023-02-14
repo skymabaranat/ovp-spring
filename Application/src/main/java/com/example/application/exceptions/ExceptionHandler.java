@@ -7,4 +7,5 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @ControllerAdvice
 @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
 public class ExceptionHandler extends RuntimeException {
+
 }

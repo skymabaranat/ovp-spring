@@ -2,16 +2,23 @@ package com.example.application.entities;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
 
-import java.util.Objects;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 public class Car {
     @Id
     public String id;
+    @NotBlank(message = "Brand is mandatory")
     public String brand;
+    @NotBlank(message = "Model is mandatory")
     public String model;
+    @NotNull(message = "Year is mandatory")
     public int year;
+    @NotNull(message = "Price is mandatory")
     public int price;
+    @NotNull(message = "Mileage is mandatory")
     public int mileage;
+    @NotBlank(message = "Colour is mandatory")
     public String colour;
 
     public Car() {

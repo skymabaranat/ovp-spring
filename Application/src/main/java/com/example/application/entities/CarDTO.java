@@ -2,12 +2,23 @@ package com.example.application.entities;
 
 import lombok.Data;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+
 public class CarDTO {
+    //add annotation to validate the fields
+
+    @NotBlank(message = "Brand is mandatory")
     public String brand;
+    @NotBlank(message = "Model is mandatory")
     public String model;
+    @NotBlank(message = "Year is mandatory")
     public int year;
+    @NotNull(message = "Price is mandatory")
     public int price;
+    @NotNull(message = "Mileage is mandatory")
     public int mileage;
+    @NotBlank(message = "Colour is mandatory")
     public String colour;
 
 //    no args constructor
