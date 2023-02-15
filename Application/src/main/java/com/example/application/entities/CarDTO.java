@@ -1,18 +1,19 @@
 package com.example.application.entities;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
+
 
 public class CarDTO {
     //add annotation to validate the fields
 
     @NotBlank(message = "Brand is mandatory")
     public String brand;
-    @NotBlank(message = "Model is mandatory")
+    @NotNull(message = "Model is mandatory")
     public String model;
-    @NotBlank(message = "Year is mandatory")
+    @NotNull(message = "Year is mandatory")
     public int year;
     @NotNull(message = "Price is mandatory")
     public int price;
