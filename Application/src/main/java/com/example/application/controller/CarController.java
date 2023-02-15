@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/cars")
@@ -46,5 +47,11 @@ public class CarController {
     public List<CarDTO> getCars() {
         List<CarDTO> cars = carService.getAllCars();
         return cars;
+    }
+    @GetMapping("/admin/{id}")
+    @ResponseBody
+    public Optional<Car> getCars(@PathVariable("id") String id) {
+        Optional<Car> car = carService.getCarByID(id);
+        return car;
     }
 }

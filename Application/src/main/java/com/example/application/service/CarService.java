@@ -3,11 +3,13 @@ package com.example.application.service;
 
 import com.example.application.entities.Car;
 import com.example.application.entities.CarDTO;
+import com.example.application.exceptions.ResourceNotFoundException;
 import com.example.application.repository.CarRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -50,4 +52,15 @@ public class CarService {
                 .map(this::convertToDto)
                 .collect(Collectors.toList());
     }
+
+    public Optional<Car> getCarByID(String id) {
+        Car car =  this.carRepository.findCarById(id);
+//                .stream()
+//                .map(this::convertToDto)
+//                .collect(Collectors.toList());
+        if (car == null)
+            throw new ResourceNotFoundException();
+        return Optional.of(car);
+    }
 }
+

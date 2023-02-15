@@ -7,6 +7,7 @@ import java.util.Optional;
 
 public interface CarRepository extends MongoRepository<Car, String> {
 //    public Car findByModel(String model);
-Optional<Car> findByBrand(String brand);
+    Optional<Car> findByBrand(String brand);
 
+    Car findCarById(String s);
 }
