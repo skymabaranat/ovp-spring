@@ -3,7 +3,7 @@ package com.example.application.exceptions;
 public class Error {
     private String message;
     private int status;
-    private Long timestamp;
+//    private Long timestamp;
     private Exception exception;
     // TODO: 15/02/2023  Format the exception message as shown in the screenshot
     public Exception getException() {
@@ -26,13 +26,13 @@ public class Error {
         this.status = status;
     }
 
-    public Long getTimestamp() {
-        return timestamp;
-    }
+//    public Long getTimestamp() {
+//        return timestamp;
+//    }
 
-    public void setTimestamp(Long timestamp) {
-        this.timestamp = timestamp;
-    }
+//    public void setTimestamp(Long timestamp) {
+//        this.timestamp = timestamp;
+//    }
 
 
 

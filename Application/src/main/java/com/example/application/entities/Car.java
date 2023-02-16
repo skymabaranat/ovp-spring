@@ -1,6 +1,5 @@
 package com.example.application.entities;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.*;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
 
@@ -13,11 +12,13 @@ public class Car {
     @NotBlank(message = "Model is mandatory")
     public String model;
     @NotNull(message = "Year is mandatory")
-    public int year;
+    @Min(1900)
+    @Max(2023)
+    public Integer year;
     @NotNull(message = "Price is mandatory")
-    public int price;
+    public Integer price;
     @NotNull(message = "Mileage is mandatory")
-    public int mileage;
+    public Integer mileage;
     @NotBlank(message = "Colour is mandatory")
     public String colour;
 

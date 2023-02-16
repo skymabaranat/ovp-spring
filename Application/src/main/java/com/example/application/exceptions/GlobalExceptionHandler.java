@@ -1,30 +1,43 @@
 package com.example.application.exceptions;
 
+import com.mongodb.DuplicateKeyException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.ConstraintViolationException;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingMatrixVariableException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.client.HttpClientErrorException;
+
+import java.util.Map;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<Object> handleResourceNotFoundException(ResourceNotFoundException e, HttpServletRequest request) {
         Error error = new Error();
-        error.setMessage(e.getMessage());
-        error.setStatus(404);
-        error.setTimestamp(System.currentTimeMillis());
+//        error.setMessage(e.getMessage());
+//        error.setStatus(404);
+//        error.setTimestamp(System.currentTimeMillis());
         return new ResponseEntity<>(error, null, 404);
     }
 
     @ExceptionHandler(ConstraintViolationException.class)
-    public ResponseEntity<Object> handleConstraintViolationException(ConstraintViolationException e, HttpServletRequest request) {
-        Error error = new Error();
-        error.setMessage("Incorrect car data provided");
-        error.setStatus(400);
-        return new ResponseEntity<>(error, null, 400);
+    public ResponseEntity<Map<String,String>> handleConstraintViolationException(ConstraintViolationException e, HttpServletRequest request) {
+        return new ResponseEntity<>(Map.of("description","Incorrect car data provided"), HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<Map<String,String>> malformedAttributeException(HttpMessageNotReadableException e, HttpServletRequest request) {
+        return new ResponseEntity<>(Map.of("description","Incorrect car data provided"), HttpStatus.BAD_REQUEST);
+    }
+    @ExceptionHandler(DuplicateKeyException.class)
+    public ResponseEntity<Map<String,String>> carAlreadyExistsException(DuplicateKeyException e, HttpServletRequest request) {
+        return new ResponseEntity<>(Map.of("description","Incorrect car data provided"), HttpStatus.BAD_REQUEST);
+    }
+
 }

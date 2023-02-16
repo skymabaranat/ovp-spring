@@ -1,9 +1,8 @@
 package com.example.application.entities;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.*;
 import lombok.Data;
-
+import org.hibernate.validator.constraints.Length;
 
 
 public class CarDTO {
@@ -13,12 +12,17 @@ public class CarDTO {
     public String brand;
     @NotNull(message = "Model is mandatory")
     public String model;
-    @NotNull(message = "Year is mandatory")
-    public int year;
+    @NotNull(message = "Model is mandatory")
+    @Min(1900)
+    @Max(2023)
+    @Digits(integer=4, fraction=0)
+    public Integer year;
     @NotNull(message = "Price is mandatory")
-    public int price;
+    @Min(0)
+    public Integer price;
     @NotNull(message = "Mileage is mandatory")
-    public int mileage;
+    @Min(0)
+    public Integer mileage;
     @NotBlank(message = "Colour is mandatory")
     public String colour;
 
