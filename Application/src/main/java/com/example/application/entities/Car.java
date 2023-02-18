@@ -12,8 +12,8 @@ public class Car {
     @NotBlank(message = "Model is mandatory")
     public String model;
     @NotNull(message = "Year is mandatory")
-    @Min(1900)
-    @Max(2023)
+    @Min(1950)
+    @Past
     public Integer year;
     @NotNull(message = "Price is mandatory")
     public Integer price;

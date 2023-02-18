@@ -2,7 +2,6 @@ package com.example.application.repository;
 
 import com.example.application.entities.Car;
 import org.springframework.data.mongodb.repository.MongoRepository;
-import org.springframework.data.mongodb.repository.Query;
 
 import java.util.Optional;
 
@@ -15,6 +14,8 @@ public interface CarRepository extends MongoRepository<Car, String> {
 //    Optional<Car> findCarByAllFields(String Brand, String Model, Integer Year, Integer Price, Integer Mileage, String Colour);
 
     Optional<Car> findFirstByBrandAndModelAndYearAndPriceAndMileageAndColour(String Brand, String Model, Integer Year, Integer Price, Integer Mileage, String Colour);
+    Boolean existsByBrandAndModelAndYearAndPriceAndMileageAndColour(String Brand, String Model, Integer Year, Integer Price, Integer Mileage, String Colour);
+    Optional<Car> findFirstByModelAndMileage(String Model, Integer Mileage);
 
     Car findCarById(String s);
 }

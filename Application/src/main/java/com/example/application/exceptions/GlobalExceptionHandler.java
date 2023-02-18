@@ -3,6 +3,7 @@ package com.example.application.exceptions;
 import com.mongodb.DuplicateKeyException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.ConstraintViolationException;
+import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -35,9 +36,13 @@ public class GlobalExceptionHandler {
     public ResponseEntity<Map<String,String>> malformedAttributeException(HttpMessageNotReadableException e, HttpServletRequest request) {
         return new ResponseEntity<>(Map.of("description","Incorrect car data provided"), HttpStatus.BAD_REQUEST);
     }
-    @ExceptionHandler(DuplicateKeyException.class)
-    public ResponseEntity<Map<String,String>> carAlreadyExistsException(DuplicateKeyException e, HttpServletRequest request) {
-        return new ResponseEntity<>(Map.of("description","Incorrect car data provided"), HttpStatus.BAD_REQUEST);
+//    @ExceptionHandler({IllegalArgumentException.class, IncorrectResultSizeDataAccessException.class})
+//    public ResponseEntity<Map<String,String>> carAlreadyExistsException(IllegalArgumentException e, IncorrectResultSizeDataAccessException a, HttpServletRequest request) {
+//        return new ResponseEntity<>(Map.of("description","Incorrect car data provided"), HttpStatus.BAD_REQUEST);
+//    }
+    @ExceptionHandler(value = CarAlreadyExistsException.class)
+    public ResponseEntity<Map<String, String>> handleCarAlreadyExistsException(CarAlreadyExistsException CarAlreadyExistsException) {
+        return new ResponseEntity(Map.of("description","Car already exists"), HttpStatus.CONFLICT);
     }
 
 }

@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 
 @Service
@@ -40,24 +41,42 @@ public class CarService {
     }
 
 
-    public void addCar(List<CarDTO> cardto) throws CarAlreadyExistsException{
-        for (int i = 0; i < cardto.size(); i++) {
-            CarDTO acar = cardto.get(i);
-            Optional<Car> car = this.carRepository.findFirstByBrandAndModelAndYearAndPriceAndMileageAndColour(acar.getBrand(), acar.getModel(), acar.getYear(), acar.getPrice(), acar.getMileage(), acar.getColour());
-            if (car.isPresent()) {
+    public void addCar(List<CarDTO> cardto) throws CarAlreadyExistsException {
+//        List<Optional<Car>> carExistsInDb =  new ArrayList();
+//        for (int i = 0; i < cardto.size(); i++) {
+//            CarDTO acar = cardto.get(i);
+//            Optional<Car> car = this.carRepository.findFirstByBrandAndModelAndYearAndPriceAndMileageAndColour(acar.getBrand(), acar.getModel(), acar.getYear(), acar.getPrice(), acar.getMileage(), acar.getColour());
+////            Optional<Car> car = this.carRepository.findCarByModelAndMileage(acar.getModel(),acar.getMileage());
+//            if (car.isPresent()) {
 //                System.out.println("IS PRESENT");
+//                carExistsInDb.add(car);
+//                throw new CarAlreadyExistsException();
+//            }
+//            System.out.println(carExistsInDb);
+//        }
+//        if (carExistsInDb.isEmpty()){
+//            List<Car> cars = cardto.stream()
+//                    .map(this::convertToEntity)
+//                    .collect(Collectors.toList());
+//            carRepository.saveAll(cars);
+//        }
+
+        List<Car> cars = cardto.stream()
+                    .map(this::convertToEntity)
+                    .collect(Collectors.toList());
+        cars.forEach(car -> {
+            if (carRepository.existsByBrandAndModelAndYearAndPriceAndMileageAndColour(
+                    car.getBrand(), car.getModel(), car.getYear(), car.getPrice(), car.getMileage(), car.getColour())){
                 throw new CarAlreadyExistsException();
-            } else {
-                System.out.println("IS NOT PRESENT");
-                List<Car> cars = cardto.stream()
-                        .map(this::convertToEntity)
-                        .collect(Collectors.toList());
-
-                carRepository.saveAll(cars);
             }
-        }
-    }
+        carRepository.save(car);
 
+        });
+    }
+    // https://www.baeldung.com/foreach-java
+    // https://stackoverflow.com/questions/68201346/how-to-look-if-list-exists-in-db-in-springboot
+
+//    // Post Mapping without exception handling
 //        public void addCar(List<CarDTO> cardto) {
 //            List<Car> cars = cardto.stream()
 //                    .map(this::convertToEntity)

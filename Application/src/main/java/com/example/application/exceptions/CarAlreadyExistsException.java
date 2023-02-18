@@ -10,4 +10,10 @@ public class CarAlreadyExistsException extends RuntimeException{
 
     private String message = "Error message";
 
+    public CarAlreadyExistsException(String message) {
+        super(message);
+        this.message = message;
+    }
+    public CarAlreadyExistsException() {
+    }
 }

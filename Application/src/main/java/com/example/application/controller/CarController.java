@@ -2,6 +2,7 @@ package com.example.application.controller;
 
 import com.example.application.entities.Car;
 import com.example.application.entities.CarDTO;
+import com.example.application.exceptions.CarAlreadyExistsException;
 import com.example.application.repository.CarRepository;
 import com.example.application.service.CarService;
 import jakarta.validation.Valid;
@@ -37,7 +38,7 @@ public class CarController {
         return this.modelMapper.map(car, CarDTO.class);
     }
     @PostMapping("/admin")
-    public ResponseEntity<Map<String, String>> saveCar(@RequestBody List<@Valid CarDTO> cardto) {
+    public ResponseEntity<Map<String, String>> saveCar(@RequestBody List<@Valid CarDTO> cardto) throws CarAlreadyExistsException {
         carService.addCar(cardto);
         return new ResponseEntity<>(Map.of("description", "Database updated"), HttpStatus.CREATED);
     }
