@@ -70,14 +70,13 @@ public class CarServiceTests {
         assertEquals(mockCar.getMileage(), carDto.getMileage());
         assertEquals(mockCar.getColour(), carDto.getColour());
     }
-    @Test
-    public void addCar_throwsCarAlreadyExistsException_whenCarAlreadyExists() {
-        Mockito.when(carRepository.save(mockCar)).thenThrow(new CarAlreadyExistsException());
-    }
+//    @Test
+//    public void addCar_throwsCarAlreadyExistsException_whenCarAlreadyExists() {
+//        Mockito.when(carRepository.save(mockCar)).thenThrow(new CarAlreadyExistsException());
+//    }
 
     @Test
     public void addCar_throwsAnException_WhenDataIsInvalid() {
-
     }
 
     @Test
@@ -89,23 +88,9 @@ public class CarServiceTests {
     }
 
     @Test
-    public void verifyNumberOfTimesMethodWasCalled() {
-    }
-
-    @Test
     public void addCar_callsRepositoryOnce() {
         List<CarDTO> mockCarList = List.of(mockCarDTO);
         carService.addCar(mockCarList);
         verify(carRepository, times(1)).saveAll(any());
-
-//        List<CarDTO> mockCarList = List.of(mockCarDTO);
-//        carService.addCar(mockCarList);
-//        Mockito.when(carRepository.save(any(Car.class))).thenReturn(mockCar);
-////        Mockito.when(carRepository.save(Car)).thenReturn(mockCar);
-//        Mockito.verify(carRepository, times(1)).save(any(Car.class));
-//        Assertions.assertEquals(carService.addCar(lis););
     }
 }
-
-
-// https://www.developer.com/java/mockito-java-unit-testing-with-mock-objects/

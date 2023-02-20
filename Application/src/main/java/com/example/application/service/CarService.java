@@ -59,8 +59,6 @@ public class CarService {
             carRepository.saveAll(cars);
         }
     }
-    // https://www.baeldung.com/foreach-java
-    // https://stackoverflow.com/questions/68201346/how-to-look-if-list-exists-in-db-in-springboot
 
     public List<CarDTO> getAllCars (){
         return this.carRepository.findAll().stream()
