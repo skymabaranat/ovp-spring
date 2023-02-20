@@ -46,16 +46,23 @@ public class CarController {
         } throw new EmptyListException();
     }
 
-    @GetMapping("/admin")
-    @ResponseBody
-    public List<CarDTO> getCars() {
-        List<CarDTO> cars = carService.getAllCars();
-        return cars;
-    }
+//    @GetMapping("/admin")
+//    @ResponseBody
+//    public List<CarDTO> getCars() {
+//        List<CarDTO> cars = carService.getAllCars();
+//        return cars;
+
     @GetMapping("/admin/{id}")
     @ResponseBody
     public Optional<Car> getCars(@PathVariable("id") String id) {
         Optional<Car> car = carService.getCarByID(id);
         return car;
+    }
+
+    @GetMapping("/admin")
+    @ResponseBody
+    public ResponseEntity<List<CarDTO>> getCars() {
+        List<CarDTO> cars = carService.getAllCars();
+        return new ResponseEntity<>(cars, HttpStatus.OK);
     }
 }

@@ -12,12 +12,15 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.Assert.assertEquals;
 
@@ -39,15 +42,6 @@ public class CarControllerTest {
         mockCarDTO = new CarDTO("VW", "Tiguan", 2005, 3500, 56000, "red");
     }
 
-//    @Test
-//    public void carMethodReturnsCreated() {
-////        Car mockCar = new Car("VW", "Tiguan", 2005, 3500, 56000, "red");
-//
-//        ResponseEntity<Map<String, String>> response = carController,
-//        Assertions.assertAll(
-//                ()-> Assertions.assertEquals(HttpStatus.CREATED, )
-//        );
-
     @Test
     public void saveCar_returnsCreated(){
 
@@ -56,14 +50,24 @@ public class CarControllerTest {
                 () -> Assertions.assertEquals("{description=Database updated}", response.getBody().toString()),
                 () -> Assertions.assertEquals(HttpStatus.CREATED, response.getStatusCode())
         );
-    }    @Test
-    public void saveCar_returnsExceptionWhenListIsEmpty(){
-        ResponseEntity response = carController.saveCar();
-        Throwable exception = Assertions.assertThrows(EmptyListException.class, () -> carService.addCar(null));
-
-        Assertions.assertAll(
-                () -> Assertions.assertEquals("{description=Database updated}", response.getBody().toString()),
-                () -> Assertions.assertEquals(HttpStatus.CREATED, exception.getMessage())
-        );
     }
+
+    @Test
+    public void saveCar_returnsExceptionWhenListIsEmpty() {
+        List<CarDTO> emptyList = new ArrayList<>();
+        EmptyListException emptyListException = Assertions.assertThrows(EmptyListException.class, () -> carController.saveCar(emptyList));
+        Assertions.assertEquals("{description=Empty List}", emptyListException.getCurrentMessage().toString());
+    }
+
+    @Test
+    public void getAllCars_returns200(){
+        ResponseEntity<List<CarDTO>> response = carController.getCars();
+        Assertions.assertEquals(HttpStatus.OK, response.getStatusCode());
+    }
+
+//    @Test
+//    public void getCarByID_returnsACar(){
+//
+//    }
+
 }

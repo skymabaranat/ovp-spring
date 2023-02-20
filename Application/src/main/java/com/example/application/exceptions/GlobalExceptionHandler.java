@@ -41,7 +41,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(value = EmptyListException.class)
     public ResponseEntity<Map<String, String>> handleEmptyListExistsException(EmptyListException emptyListException) {
-        return new ResponseEntity(Map.of("description","Empty List"), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity(emptyListException.getCurrentMessage(), HttpStatus.BAD_REQUEST);
     }
 
 
