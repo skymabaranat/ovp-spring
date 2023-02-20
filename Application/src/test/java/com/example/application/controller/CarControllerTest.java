@@ -2,20 +2,22 @@ package com.example.application.controller;
 
 import com.example.application.entities.Car;
 import com.example.application.entities.CarDTO;
+import com.example.application.exceptions.EmptyListException;
 import com.example.application.repository.CarRepository;
 import com.example.application.service.CarService;
+import com.example.application.service.CarServiceTests;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import java.util.Map;
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
@@ -30,6 +32,12 @@ public class CarControllerTest {
     @InjectMocks
     CarController carController;
 
+    private CarDTO mockCarDTO;
+
+    @BeforeEach
+    public void init() {
+        mockCarDTO = new CarDTO("VW", "Tiguan", 2005, 3500, 56000, "red");
+    }
 
 //    @Test
 //    public void carMethodReturnsCreated() {
@@ -42,44 +50,20 @@ public class CarControllerTest {
 
     @Test
     public void saveCar_returnsCreated(){
-        ResponseEntity response = carController.saveCar(null);
+
+        ResponseEntity response = carController.saveCar(List.of(mockCarDTO));
         Assertions.assertAll(
                 () -> Assertions.assertEquals("{description=Database updated}", response.getBody().toString()),
                 () -> Assertions.assertEquals(HttpStatus.CREATED, response.getStatusCode())
         );
-    }
+    }    @Test
+    public void saveCar_returnsExceptionWhenListIsEmpty(){
+        ResponseEntity response = carController.saveCar();
+        Throwable exception = Assertions.assertThrows(EmptyListException.class, () -> carService.addCar(null));
 
-    private ModelMapper modelMapper = new ModelMapper();
-
-    @Test
-    public void whenConvertCarEntityToCarDTO_thenCorrect() {
-        Car car = new Car("VW", "Tiguan", 2005, 3500, 56000, "red");
-
-        CarDTO carDto = modelMapper.map(car, CarDTO.class);
-        assertEquals(car.getBrand(), carDto.getBrand());
-        assertEquals(car.getModel(), carDto.getModel());
-        assertEquals(car.getYear(), carDto.getYear());
-        assertEquals(car.getPrice(), carDto.getPrice());
-        assertEquals(car.getMileage(), carDto.getMileage());
-        assertEquals(car.getColour(), carDto.getColour());
-    }
-
-    @Test
-    public void whenConvertCarDTOToCarEntity_thenCorrect() {
-        CarDTO carDto = new CarDTO();
-        carDto.setBrand("1");
-        carDto.setModel("Tiguan");
-        carDto.setYear(2022);
-        carDto.setPrice(15000);
-        carDto.setMileage(10);
-        carDto.setColour("Midnight Blue");
-
-        Car car = modelMapper.map(carDto, Car.class);
-        assertEquals(carDto.getBrand(), car.getBrand());
-        assertEquals(carDto.getModel(), car.getModel());
-        assertEquals(carDto.getYear(), car.getYear());
-        assertEquals(carDto.getPrice(), car.getPrice());
-        assertEquals(carDto.getMileage(), car.getMileage());
-        assertEquals(carDto.getColour(), car.getColour());
+        Assertions.assertAll(
+                () -> Assertions.assertEquals("{description=Database updated}", response.getBody().toString()),
+                () -> Assertions.assertEquals(HttpStatus.CREATED, exception.getMessage())
+        );
     }
 }

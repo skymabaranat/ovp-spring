@@ -47,15 +47,6 @@ public class CarServiceTests {
 
     @Test
      void whenConvertCarDTOToCarEntity_thenCorrect() {
-//        CarDTO =
-//        List<CarDTO>
-//        CarDTO carDto = mockCarDTO;
-//        carDto.setBrand("1");
-//        carDto.setModel("Tiguan");
-//        carDto.setYear(2022);
-//        carDto.setPrice(15000);
-//        carDto.setMileage(10);
-//        carDto.setColour("Midnight Blue");
 
         Car car = modelMapper.map(mockCarDTO, Car.class);
         assertEquals(mockCarDTO.getBrand(), car.getBrand());

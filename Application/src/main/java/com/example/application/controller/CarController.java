@@ -35,9 +35,9 @@ public class CarController {
         this.modelMapper = modelMapper;
     }
 
-    private CarDTO convertToDto(Car car) {
-        return this.modelMapper.map(car, CarDTO.class);
-    }
+//    private CarDTO convertToDto(Car car) {
+//        return this.modelMapper.map(car, CarDTO.class);
+//    }
     @PostMapping("/admin")
     public ResponseEntity<Map<String, String>> saveCar(@RequestBody List<@Valid CarDTO> cardto) throws CarAlreadyExistsException {
         if (!cardto.isEmpty()) {
