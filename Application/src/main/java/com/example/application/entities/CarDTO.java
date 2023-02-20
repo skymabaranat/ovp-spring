@@ -4,6 +4,8 @@ import jakarta.validation.constraints.*;
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;
 
+import java.util.Objects;
+
 
 public class CarDTO {
     //add annotation to validate the fields
@@ -90,6 +92,29 @@ public class CarDTO {
         this.colour = colour;
     }
 
-//  Equals and hash code
+    @Override
+    public String toString() {
+        return "CarDTO{" +
+                "brand='" + brand + '\'' +
+                ", model='" + model + '\'' +
+                ", year=" + year +
+                ", price=" + price +
+                ", mileage=" + mileage +
+                ", colour='" + colour + '\'' +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        CarDTO carDTO = (CarDTO) o;
+        return brand.equals(carDTO.brand) && model.equals(carDTO.model) && year.equals(carDTO.year) && price.equals(carDTO.price) && mileage.equals(carDTO.mileage) && colour.equals(carDTO.colour);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(brand, model, year, price, mileage, colour);
+    }
 }
 

@@ -3,6 +3,8 @@ import jakarta.validation.constraints.*;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
 
+import java.util.Objects;
+
 
 public class Car {
     @Id
@@ -94,17 +96,16 @@ public class Car {
                 '}';
     }
 
-//    @Override
-//    public boolean equals(Object o) {
-//        if (this == o) return true;
-//        if (o == null || getClass() != o.getClass()) return false;
-//        Car car = (Car) o;
-//        return year == car.year && price == car.price && mileage == car.mileage && Objects.equals(id, car.id) && Objects.equals(brand, car.brand) && Objects.equals(model, car.model) && Objects.equals(colour, car.colour);
-//    }
-//
-//    @Override
-//    public int hashCode() {
-//        return Objects.hash(id, brand, model, year, price, mileage, colour);
-//    }
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Car car = (Car) o;
+        return id.equals(car.id) && brand.equals(car.brand) && model.equals(car.model) && year.equals(car.year) && price.equals(car.price) && mileage.equals(car.mileage) && colour.equals(car.colour);
+    }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, brand, model, year, price, mileage, colour);
+    }
 }

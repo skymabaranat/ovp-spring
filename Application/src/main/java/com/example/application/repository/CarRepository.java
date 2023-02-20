@@ -6,15 +6,14 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import java.util.Optional;
 
 public interface CarRepository extends MongoRepository<Car, String> {
-//    public Car findByModel(String model);
+//    public Car findA(String model);
     Optional<Car> findByBrand(String brand);
 
     Optional<Car> findCarByModelAndMileage(String Model, Integer mileage);
-//    @Query(value = "SELECT car FROM car WHERE car.brand='BMW'")
-//    Optional<Car> findCarByAllFields(String Brand, String Model, Integer Year, Integer Price, Integer Mileage, String Colour);
 
     Optional<Car> findFirstByBrandAndModelAndYearAndPriceAndMileageAndColour(String Brand, String Model, Integer Year, Integer Price, Integer Mileage, String Colour);
     Boolean existsByBrandAndModelAndYearAndPriceAndMileageAndColour(String Brand, String Model, Integer Year, Integer Price, Integer Mileage, String Colour);
+//    https://www.baeldung.com/spring-data-exists-query
     Optional<Car> findFirstByModelAndMileage(String Model, Integer Mileage);
 
     Car findCarById(String s);

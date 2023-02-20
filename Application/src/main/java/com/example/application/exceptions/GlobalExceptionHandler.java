@@ -1,18 +1,12 @@
 package com.example.application.exceptions;
 
-import com.mongodb.DuplicateKeyException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.ConstraintViolationException;
-import org.springframework.dao.IncorrectResultSizeDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
-import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.MissingMatrixVariableException;
-import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.client.HttpClientErrorException;
 
 import java.util.Map;
 
@@ -41,8 +35,15 @@ public class GlobalExceptionHandler {
 //        return new ResponseEntity<>(Map.of("description","Incorrect car data provided"), HttpStatus.BAD_REQUEST);
 //    }
     @ExceptionHandler(value = CarAlreadyExistsException.class)
-    public ResponseEntity<Map<String, String>> handleCarAlreadyExistsException(CarAlreadyExistsException CarAlreadyExistsException) {
+    public ResponseEntity<Map<String, String>> handleCarAlreadyExistsException(CarAlreadyExistsException carAlreadyExistsException) {
         return new ResponseEntity(Map.of("description","Car already exists"), HttpStatus.CONFLICT);
     }
+
+    @ExceptionHandler(value = EmptyListException.class)
+    public ResponseEntity<Map<String, String>> handleEmptyListExistsException(EmptyListException emptyListException) {
+        return new ResponseEntity(Map.of("description","Empty List"), HttpStatus.BAD_REQUEST);
+    }
+
+
 
 }
