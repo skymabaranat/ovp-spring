@@ -43,7 +43,7 @@ public class CarService {
 
 
     public void addCar(List<CarDTO> cardto) throws CarAlreadyExistsException {
-        List<Car> carExistsInDb =  new ArrayList();
+        List<Car> carExistsInDb =  new ArrayList<Car>();
         List<Car> cars = cardto.stream()
                     .map(this::convertToEntity)
                     .collect(Collectors.toList());
@@ -54,20 +54,13 @@ public class CarService {
                 throw new CarAlreadyExistsException();
             }
         });
-        if (!carExistsInDb.isEmpty()) {
+//        carRepository.saveAll(cars);
+        if (carExistsInDb.isEmpty()) {
             carRepository.saveAll(cars);
         }
     }
     // https://www.baeldung.com/foreach-java
     // https://stackoverflow.com/questions/68201346/how-to-look-if-list-exists-in-db-in-springboot
-
-//    // Post Mapping without exception handling
-//        public void addCar(List<CarDTO> cardto) {
-//            List<Car> cars = cardto.stream()
-//                    .map(this::convertToEntity)
-//                    .collect(Collectors.toList());
-//            carRepository.saveAll(cars);
-//        }
 
     public List<CarDTO> getAllCars (){
         return this.carRepository.findAll().stream()

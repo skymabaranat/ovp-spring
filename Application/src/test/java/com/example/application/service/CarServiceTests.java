@@ -18,12 +18,15 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
 import static org.junit.Assert.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
 public class CarServiceTests {
@@ -68,7 +71,7 @@ public class CarServiceTests {
         assertEquals(mockCar.getColour(), carDto.getColour());
     }
     @Test
-    public void addCar_throwsAConflictException_WhenCarAlreadyExists() {
+    public void addCar_throwsCarAlreadyExistsException_whenCarAlreadyExists() {
         Mockito.when(carRepository.save(mockCar)).thenThrow(new CarAlreadyExistsException());
     }
 
@@ -79,6 +82,7 @@ public class CarServiceTests {
 
     @Test
     public void getAllCars_returnsAListOfAllCarsInTheRepository() {
+//        List<Car> listOfCars =
         Mockito.when(carRepository.findAll()).thenReturn(List.of(mockCar));
         List<CarDTO> mockCarList = carService.getAllCars();
         assertEquals(List.of(mockCarDTO), mockCarList);
@@ -86,6 +90,20 @@ public class CarServiceTests {
 
     @Test
     public void verifyNumberOfTimesMethodWasCalled() {
+    }
+
+    @Test
+    public void addCar_callsRepositoryOnce() {
+        List<CarDTO> mockCarList = List.of(mockCarDTO);
+        carService.addCar(mockCarList);
+        verify(carRepository, times(1)).saveAll(any());
+
+//        List<CarDTO> mockCarList = List.of(mockCarDTO);
+//        carService.addCar(mockCarList);
+//        Mockito.when(carRepository.save(any(Car.class))).thenReturn(mockCar);
+////        Mockito.when(carRepository.save(Car)).thenReturn(mockCar);
+//        Mockito.verify(carRepository, times(1)).save(any(Car.class));
+//        Assertions.assertEquals(carService.addCar(lis););
     }
 }
 
