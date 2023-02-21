@@ -1,0 +1,8 @@
+Map Car DTO to Car entity   DONE   https://www.baeldung.com/entity-to-and-from-dto-for-a-java-spring-application
+Add validation to fields in Car/CarDTO    https://www.baeldung.com/spring-boot-bean-validation
+Only one controller is needed, remove /private from RequestMapping annotation in CarController(?) DISCUSS
+Lombok @Data = @Getter, @Setter, @ToString, @EqualsAndHashCode and @RequiredArgsConstructor add last two
+
+@Past https://www.studytonight.com/spring-boot/spring-boot-validations
+
+// Amend method to handle empty list post

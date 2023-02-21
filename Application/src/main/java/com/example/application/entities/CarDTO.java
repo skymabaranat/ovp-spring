@@ -1,33 +1,39 @@
 package com.example.application.entities;
+
 import jakarta.validation.constraints.*;
 import lombok.Data;
-import org.springframework.data.annotation.Id;
+import org.hibernate.validator.constraints.Length;
 
 import java.util.Objects;
 
 
-public class Car {
-    @Id
-    public String id;
+public class CarDTO {
+    //add annotation to validate the fields
+
     @NotBlank(message = "Brand is mandatory")
     public String brand;
-    @NotBlank(message = "Model is mandatory")
+    @NotNull(message = "Model is mandatory")
     public String model;
-    @NotNull(message = "Year is mandatory")
-    @Min(1950)
-    @Past
+    @NotNull(message = "Model is mandatory")
+    @Min(1900)
+    @Max(2023)
+    @Digits(integer=4, fraction=0)
     public Integer year;
     @NotNull(message = "Price is mandatory")
+    @Min(0)
     public Integer price;
     @NotNull(message = "Mileage is mandatory")
+    @Min(0)
     public Integer mileage;
     @NotBlank(message = "Colour is mandatory")
     public String colour;
 
-    public Car() {
+//    no args constructor
+    public CarDTO() {
     }
 
-    public Car(String brand, String model, int year, int price, int mileage, String colour) {
+// all args constructor
+    public CarDTO(String brand, String model, int year, int price, int mileage, String colour) {
         this.brand = brand;
         this.model = model;
         this.year = year;
@@ -35,6 +41,8 @@ public class Car {
         this.mileage = mileage;
         this.colour = colour;
     }
+
+//    Getters and setters
 
     public String getBrand() {
         return brand;
@@ -86,7 +94,7 @@ public class Car {
 
     @Override
     public String toString() {
-        return "Car{" +
+        return "CarDTO{" +
                 "brand='" + brand + '\'' +
                 ", model='" + model + '\'' +
                 ", year=" + year +
@@ -100,12 +108,13 @@ public class Car {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Car car = (Car) o;
-        return id.equals(car.id) && brand.equals(car.brand) && model.equals(car.model) && year.equals(car.year) && price.equals(car.price) && mileage.equals(car.mileage) && colour.equals(car.colour);
+        CarDTO carDTO = (CarDTO) o;
+        return brand.equals(carDTO.brand) && model.equals(carDTO.model) && year.equals(carDTO.year) && price.equals(carDTO.price) && mileage.equals(carDTO.mileage) && colour.equals(carDTO.colour);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, brand, model, year, price, mileage, colour);
+        return Objects.hash(brand, model, year, price, mileage, colour);
     }
 }
+
