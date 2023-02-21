@@ -3,7 +3,9 @@ package com.example.application.service;
 import com.example.application.entities.Car;
 import com.example.application.entities.CarDTO;
 import com.example.application.exceptions.CarAlreadyExistsException;
+import com.example.application.exceptions.EmptyListException;
 import com.example.application.repository.CarRepository;
+import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import org.apache.catalina.connector.Response;
 import org.junit.jupiter.api.Assertions;
@@ -17,11 +19,9 @@ import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -70,14 +70,6 @@ public class CarServiceTests {
         assertEquals(mockCar.getMileage(), carDto.getMileage());
         assertEquals(mockCar.getColour(), carDto.getColour());
     }
-//    @Test
-//    public void addCar_throwsCarAlreadyExistsException_whenCarAlreadyExists() {
-//        Mockito.when(carRepository.save(mockCar)).thenThrow(new CarAlreadyExistsException());
-//    }
-
-    @Test
-    public void addCar_throwsAnException_WhenDataIsInvalid() {
-    }
 
     @Test
     public void getAllCars_returnsAListOfAllCarsInTheRepository() {
@@ -93,4 +85,26 @@ public class CarServiceTests {
         carService.addCar(mockCarList);
         verify(carRepository, times(1)).saveAll(any());
     }
+
+    @Test
+    public void addCar_whenCarAlreadyExists_throwsCarAlreadyExistsException() {
+        List<CarDTO> mockCarList = List.of(mockCarDTO);
+        Mockito.when(carRepository.saveAll(any())).thenThrow(new CarAlreadyExistsException());
+        Assertions.assertThrows(CarAlreadyExistsException.class, () -> carService.addCar(mockCarList));
+    }
+
+    @Test
+    public void addCar_whenInvalidData_throwsConstraintViolationException() {
+        List<CarDTO> mockCarList = List.of(mockCarDTO);
+        Mockito.when(carRepository.saveAll(any())).thenThrow(new ConstraintViolationException(new HashSet<ConstraintViolation<?>>()));
+        Assertions.assertThrows(ConstraintViolationException.class, () -> carService.addCar(mockCarList));
+    }
+
+    @Test
+    public void addCar_whenMalformedData_throwsHttpMessageNotReadableException() {
+        List<CarDTO> mockCarList = List.of(mockCarDTO);
+        Mockito.when(carRepository.saveAll(any())).thenThrow(new HttpMessageNotReadableException("Incorrect car data provided", new Exception(), null));
+        Assertions.assertThrows(HttpMessageNotReadableException.class, () -> carService.addCar(mockCarList));
+    }
+
 }
