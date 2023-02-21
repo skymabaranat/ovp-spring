@@ -8,6 +8,7 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import io.restassured.http.ContentType;
+import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import io.restassured.response.ValidatableResponse;
 import io.restassured.specification.RequestSpecification;
@@ -27,16 +28,11 @@ public class RequestSteps {
 
     ObjectMapper mapper = new ObjectMapper();
 
-    private String convertDatatableToString(Object dataTable) throws JsonProcessingException {
-        return mapper.writeValueAsString(dataTable);
-    }
-//    private DataTable convertJSONToString(Object dataTable) throws JsonProcessingException {
-//        return mapper.writeValueAsString(dataTable);
-//    }
-
     @Given("the user wants to create a Car with the following details")
     public void the_user_wants_to_create_a_car_with_the_following_details(List<Map<String,String>> dataTable) throws JsonProcessingException {
-        String car = convertDatatableToString(dataTable);
+        System.out.println("DATATABLE *******" + dataTable);
+        String car = mapper.writeValueAsString(dataTable);
+        System.out.println("CAR *******" + car);
         requestSpecification = given().contentType(ContentType.JSON).body(car);
     }
 
@@ -62,5 +58,14 @@ public class RequestSteps {
     @And("the response body should contain the text {string}")
     public void the_response_body_should_contain_the_text(String expectedResponseBody) {
         Assertions.assertEquals(expectedResponseBody, testResponse.getBody().asString());
+    }
+
+    @And("the response body should contain the cars")
+    public void the_response_body_should_contain_the_cars(List<Map<String, String>> expectedResponseBody) throws JsonProcessingException {
+        String jsonString = testResponse.asString();
+        String eB =  mapper.writeValueAsString(expectedResponseBody);
+//        List<Map<String, String>> cars = JsonPath.from(jsonString).get("cars");
+        Assertions.assertEquals(eB, testResponse.getBody().asString());
+        // todo integers are returned as strings
     }
 }
