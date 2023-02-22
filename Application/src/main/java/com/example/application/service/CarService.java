@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 
 @Service
@@ -72,5 +71,20 @@ public class CarService {
             throw new ResourceNotFoundException();
         return Optional.of(car);
     }
+
+    public List<CarDTO> getCarsByBrand(String brand){
+        return this.carRepository.findAllByBrand(brand).stream()
+                .map(this::convertToDto)
+                .collect(Collectors.toList());
+    }
+////        List<Car> carsByBrand = this.carRepository.findCarByBrand(brand);
+////        if (carsByBrand == null){
+////            throw  new ResourceNotFoundException();
+////        }
+//        List<CarDTO> carsByBrand = this.carRepository.findAll().stream()
+//                .map(this::convertToDto)
+//                .collect(Collectors.toList());
+//        return carsByBrand;
+//    }
 }
 

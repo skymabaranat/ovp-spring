@@ -65,9 +65,10 @@ public class CarControllerTest {
         Assertions.assertEquals(HttpStatus.OK, response.getStatusCode());
     }
 
-//    @Test
-//    public void getCarByID_returnsACar(){
-//
-//    }
+    @Test
+    public void getCarByBrand_whenCarExists_returnsA200Ok() {
+        ResponseEntity<List<CarDTO>> response = carController.getCarsByBrand("BMW");
+        Assertions.assertEquals(HttpStatus.OK, response.getStatusCode());
+    }
 
 }

@@ -13,12 +13,8 @@ import java.util.Map;
 @ControllerAdvice
 public class GlobalExceptionHandler {
     @ExceptionHandler(ResourceNotFoundException.class)
-    public ResponseEntity<Object> handleResourceNotFoundException(ResourceNotFoundException e, HttpServletRequest request) {
-        Error error = new Error();
-//        error.setMessage(e.getMessage());
-//        error.setStatus(404);
-//        error.setTimestamp(System.currentTimeMillis());
-        return new ResponseEntity<>(error, null, 404);
+    public ResponseEntity<Object> resourceNotFoundException(ResourceNotFoundException resourceNotFoundException, HttpServletRequest request) {
+        return new ResponseEntity(resourceNotFoundException.getCurrentMessage(), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(ConstraintViolationException.class)
