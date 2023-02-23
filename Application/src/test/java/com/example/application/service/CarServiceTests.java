@@ -22,11 +22,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 
 import java.util.*;
+import java.util.stream.Stream;
 
 import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class CarServiceTests {
@@ -78,6 +78,48 @@ public class CarServiceTests {
         assertEquals(List.of(mockCarDTO), mockCarList);
         verify(carRepository, times(1)).findAll();
     }
+    @Test
+    public void getCarsBy_returnsAListOfFilteredCars() {
+        Car car1 = new Car("BMW", "X5", 2022, 65000, 0, "Black");
+        Car car2 = new Car("BMW", "X3", 2021, 55000, 1000, "White");
+        Car car3 = new Car("VW", "Tiguan", 2005, 3500, 56000, "red");
+
+        // Set up the mock cars list to return car1 and car2
+        Mockito.when(carRepository.findAll()).thenReturn(List.of(car1, car2, car3));
+
+        // Test filtering by brand
+        List<CarDTO> filteredCars = carService.getCarsBy("BMW", null, null, null, null,  null);
+        assertEquals(2, filteredCars.size());
+
+        // Test filtering by model
+        filteredCars = carService.getCarsBy(null, "X5", null, null, null, null);
+        assertEquals(1, filteredCars.size());
+        assertEquals("X5", filteredCars.get(0).getModel());
+
+        filteredCars = carService.getCarsBy(null, "Tiguan", null, null, null, null);
+        assertEquals(1, filteredCars.size());
+
+        // Test filtering by year
+        filteredCars = carService.getCarsBy(null, null, 2021, null, null, null);
+        assertEquals(1, filteredCars.size());
+        assertEquals(2021, filteredCars.get(0).getYear());
+
+        // Test sorting by price
+        filteredCars = carService.getCarsBy(null, null,  null, 65000, null, null);
+        assertEquals(1, filteredCars.size());
+        assertEquals(65000.0, filteredCars.get(0).getPrice(), 0.0);
+
+        // Test sorting by mileage
+        filteredCars = carService.getCarsBy(null, null, null, null, 0, null);
+        assertEquals(1, filteredCars.size());
+        assertEquals(0.0, filteredCars.get(0).getMileage(), 0.0);
+
+        // Test sorting by colour
+        filteredCars = carService.getCarsBy(null, null, null, null, null, "Black");
+        assertEquals(1, filteredCars.size());
+        assertEquals("Black", filteredCars.get(0).getColour());
+    }
+
 
     @Test
     public void addCar_callsRepositoryOnce() {

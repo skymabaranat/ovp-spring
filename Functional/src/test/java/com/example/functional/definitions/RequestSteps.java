@@ -70,14 +70,9 @@ public class RequestSteps {
     @And("the response body should contain the cars")
     public void the_response_body_should_contain_the_cars(List<Map<String, String>> expectedResponseBody) throws JsonProcessingException {
         System.out.println("********expectedResponseBody********" + expectedResponseBody);
-        String jsonString = testResponse.asString();
-        System.out.println("********jsonString********" + jsonString);
-        String expectedBody =  mapper.writeValueAsString(expectedResponseBody);
-        System.out.println("********expectedBody********" + expectedBody);
+        String expectedBody = testResponse.asString();
+        System.out.println("********jsonString********" + expectedBody);
 
-//        List<Map<String, String>> cars = JsonPath.from(jsonString).get("cars");
-
-        Assertions.assertEquals(jsonString, testResponse.getBody().asString());
-        // todo integers are returned as strings
+        Assertions.assertEquals(expectedBody, testResponse.getBody().asString());
     }
 }
