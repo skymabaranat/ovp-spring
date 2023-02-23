@@ -77,6 +77,39 @@ public class CarService {
                 .map(this::convertToDto)
                 .collect(Collectors.toList());
     }
+
+    public List<CarDTO> getCarsBy(String brand, String model, Integer year, Integer price, Integer mileage, String colour){
+        List<CarDTO> carDTOS = this.carRepository.findAll().stream()
+                .map(this::convertToDto)
+                .collect(Collectors.toList());
+        if (brand != null){
+            carDTOS = carDTOS.stream()
+                    .filter(carDTO -> carDTO.getBrand().equals(brand))
+                    .collect(Collectors.toList());
+        }
+        if (model != null){
+            carDTOS = carDTOS.stream()
+                    .filter(carDTO -> carDTO.getModel().equals(model))
+                    .collect(Collectors.toList());
+        }
+        if (year != null){
+            carDTOS = carDTOS.stream().filter(carDTO -> carDTO.getYear() == year).collect(Collectors.toList());
+
+        }
+        if (price != null){
+            carDTOS = carDTOS.stream().filter(carDTO -> carDTO.getPrice() == price).collect(Collectors.toList());
+
+        }
+        if (mileage != null){
+            carDTOS = carDTOS.stream().filter(carDTO -> carDTO.getMileage() == mileage).collect(Collectors.toList());
+        }
+        if (colour != null){
+            carDTOS = carDTOS.stream()
+                    .filter(carDTO -> carDTO.getColour().equals(colour))
+                    .collect(Collectors.toList());
+        }
+        return carDTOS;
+    }
 ////        List<Car> carsByBrand = this.carRepository.findCarByBrand(brand);
 ////        if (carsByBrand == null){
 ////            throw  new ResourceNotFoundException();

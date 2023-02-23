@@ -77,7 +77,7 @@ public class RequestSteps {
 
 //        List<Map<String, String>> cars = JsonPath.from(jsonString).get("cars");
 
-        Assertions.assertEquals(expectedBody, testResponse.getBody().asString());
+        Assertions.assertEquals(jsonString, testResponse.getBody().asString());
         // todo integers are returned as strings
     }
 }

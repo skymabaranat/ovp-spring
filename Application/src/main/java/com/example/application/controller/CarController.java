@@ -46,19 +46,19 @@ public class CarController {
         } throw new EmptyListException();
     }
 
-    @GetMapping("/admin")
-    @ResponseBody
-    public ResponseEntity<List<CarDTO>> getCars() {
-        List<CarDTO> cars = carService.getAllCars();
-        return new ResponseEntity<>(cars, HttpStatus.OK);
-    }
+//    @GetMapping("/admin")
+//    @ResponseBody
+//    public ResponseEntity<List<CarDTO>> getCars() {
+//        List<CarDTO> cars = carService.getAllCars();
+//        return new ResponseEntity<>(cars, HttpStatus.OK);
+//    }
 
-    @GetMapping("/admin/{id}")
-    @ResponseBody
-    public Optional<Car> getCars(@PathVariable("id") String id) {
-        Optional<Car> car = carService.getCarByID(id);
-        return car;
-    }
+//    @GetMapping("/admin/{id}")
+//    @ResponseBody
+//    public Optional<Car> getCars(@PathVariable("id") String id) {
+//        Optional<Car> car = carService.getCarByID(id);
+//        return car;
+//    }
 
     @GetMapping("/adminbrand")
     @ResponseBody
@@ -74,4 +74,18 @@ public class CarController {
     }
 
 
+    @GetMapping("/admin")
+    public ResponseEntity<List<CarDTO>> getCars(
+            @RequestParam(name = "brand", required = false) String brand,
+            @RequestParam(name = "model", required = false) String model,
+            @RequestParam(name = "year", required = false) Integer year,
+            @RequestParam(name = "price", required = false) Integer price,
+            @RequestParam(name = "mileage", required = false) Integer mileage,
+            @RequestParam(name = "colour", required = false) String colour) {
+        List<CarDTO> cars = carService.getCarsBy(brand, model, year, price, mileage, colour);
+        return new ResponseEntity<>(cars, HttpStatus.OK);
+    }
 }
+
+
+

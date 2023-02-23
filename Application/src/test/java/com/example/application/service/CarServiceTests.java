@@ -24,7 +24,7 @@ import org.springframework.http.converter.HttpMessageNotReadableException;
 import java.util.*;
 
 import static org.junit.Assert.*;
-import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
@@ -73,10 +73,10 @@ public class CarServiceTests {
 
     @Test
     public void getAllCars_returnsAListOfAllCarsInTheRepository() {
-//        List<Car> listOfCars =
         Mockito.when(carRepository.findAll()).thenReturn(List.of(mockCar));
-        List<CarDTO> mockCarList = carService.getAllCars();
+        List<CarDTO> mockCarList = carService.getCarsBy(null, null, null, null, null, null);
         assertEquals(List.of(mockCarDTO), mockCarList);
+        verify(carRepository, times(1)).findAll();
     }
 
     @Test

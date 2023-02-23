@@ -7,7 +7,7 @@ import org.springframework.data.mongodb.repository.Query;
 import java.util.List;
 
 public interface CarRepository extends MongoRepository<Car, String> {
-d);
+
 
 //    @Query(value = "{'brand' : ?0}")
     List<Car> findAllByBrand(String brand);

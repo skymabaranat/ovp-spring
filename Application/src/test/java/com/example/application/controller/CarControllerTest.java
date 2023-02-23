@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
 
 @ExtendWith(MockitoExtension.class)
 public class CarControllerTest {
@@ -61,7 +62,7 @@ public class CarControllerTest {
 
     @Test
     public void getAllCars_returns200(){
-        ResponseEntity<List<CarDTO>> response = carController.getCars();
+        ResponseEntity<List<CarDTO>> response = carController.getCars(null, null, null, null, null, null);
         Assertions.assertEquals(HttpStatus.OK, response.getStatusCode());
     }
 
