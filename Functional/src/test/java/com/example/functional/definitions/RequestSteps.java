@@ -1,5 +1,6 @@
 package com.example.functional.definitions;
 
+import com.example.application.entities.Car;
 import io.cucumber.core.internal.com.fasterxml.jackson.core.JsonProcessingException;
 import io.cucumber.core.internal.com.fasterxml.jackson.databind.ObjectMapper;
 import io.cucumber.datatable.DataTable;
@@ -41,8 +42,16 @@ public class RequestSteps {
         String car = mapper.writeValueAsString(dataTable);
         System.out.println("********CAR********" + car);
         requestSpecification = given().contentType(ContentType.JSON).body(car);
-    }
 
+    }
+    @Given("there exists a Car in the database with the following details")
+    public void there_exists_a_car_with_the_following_details(List<Map<String,String>> dataTable) throws JsonProcessingException {
+        System.out.println("********DATATABLE*******" + dataTable);
+        String car = mapper.writeValueAsString(dataTable);
+        System.out.println("********CAR********" + car);
+        requestSpecification = given().contentType(ContentType.JSON).body(car);
+        requestSpecification.post("/cars/admin");
+    }
     @When("a GET request is made to the {string} endpoint")
     public void a_request_is_made_to_the_endpoint(String endpoint) {
         testResponse = given().get(endpoint);
@@ -68,11 +77,13 @@ public class RequestSteps {
     }
 
     @And("the response body should contain the cars")
-    public void the_response_body_should_contain_the_cars(List<Map<String, String>> expectedResponseBody) throws JsonProcessingException {
+    public void the_response_body_should_contain_the_cars(List<Car> expectedResponseBody) throws JsonProcessingException {
         System.out.println("********expectedResponseBody********" + expectedResponseBody);
-        String expectedBody = testResponse.asString();
-        System.out.println("********jsonString********" + expectedBody);
+//        String jsonString = expectedResponseBody.toString();
+//        System.out.println("********jsonString********" + jsonString);
+        String expectedBody =  mapper.writeValueAsString(expectedResponseBody);
+        System.out.println("********expectedBody********" + expectedBody);
 
-        Assertions.assertEquals(expectedBody, testResponse.getBody().asString());
+        Assertions.assertEquals(expectedResponseBody, testResponse.getBody().asString());
     }
 }
