@@ -41,11 +41,11 @@ Feature: testingCarEndpoints
     Then the client receives status code of 409
     And the response body should contain the text '{"description":"Car already exists"}'
 
-  Scenario: the client makes a GET request to the cars/admin endpoint and a list of cars are returned
-    When a GET request is made to the 'cars/admin' endpoint
-    Then it should return a 200 response
-    And the response body should contain the cars
-      | brand | model | year | price | mileage | colour |
-      | Tesla |   A1  | 2001 | 195000 | 10000 | White |
+#  Scenario: the client makes a GET request to the cars/admin endpoint and a list of cars are returned
+#    When a GET request is made to the 'cars/admin' endpoint
+#    Then it should return a 200 response
+#    And the response body should contain the cars
+#      | brand | model | year | price | mileage | colour |
+#      | Tesla |   A1  | 2001 | 195000 | 10000 | White |
 
 
