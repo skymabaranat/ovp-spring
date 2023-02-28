@@ -33,7 +33,7 @@ public class CarDTO {
     }
 
 // all args constructor
-    public CarDTO(String brand, String model, Integer year, Integer price, Integer mileage, String colour) {
+    public CarDTO(String brand, String model, int year, int price, int mileage, String colour) {
         this.brand = brand;
         this.model = model;
         this.year = year;

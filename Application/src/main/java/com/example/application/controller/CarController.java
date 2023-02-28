@@ -29,10 +29,10 @@ public class CarController {
     private ModelMapper modelMapper;
 
 
-    public CarController (CarService carService, ModelMapper modelMapper){
+    public CarController (CarService carService){
         super();
         this.carService = carService;
-        this.modelMapper = modelMapper;
+//        this.modelMapper = modelMapper;
     }
 
 //    private CarDTO convertToDto(Car car) {
