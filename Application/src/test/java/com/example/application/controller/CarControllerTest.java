@@ -3,9 +3,11 @@ package com.example.application.controller;
 import com.example.application.entities.Car;
 import com.example.application.entities.CarDTO;
 import com.example.application.exceptions.EmptyListException;
+import com.example.application.exceptions.InvalidRequestException;
 import com.example.application.repository.CarRepository;
 import com.example.application.service.CarService;
 import com.example.application.service.CarServiceTests;
+import jakarta.servlet.http.HttpServletRequest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -24,6 +26,7 @@ import java.util.Optional;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
 
 @ExtendWith(MockitoExtension.class)
 public class CarControllerTest {
@@ -43,6 +46,7 @@ public class CarControllerTest {
         mockCarDTO = new CarDTO("VW", "Tiguan", 2005, 3500, 56000, "red");
     }
 
+
     @Test
     public void saveCar_returnsCreated(){
 
@@ -60,16 +64,39 @@ public class CarControllerTest {
         Assertions.assertEquals("{description=Empty List}", emptyListException.getCurrentMessage().toString());
     }
 
+
     @Test
-    public void getAllCars_returns200(){
-        ResponseEntity<List<CarDTO>> response = carController.getCars(null, null, null, null, null, null);
-        Assertions.assertEquals(HttpStatus.OK, response.getStatusCode());
+    public void getAllCars(){
+        HttpServletRequest request = mock(HttpServletRequest.class);
+        Mockito.lenient().when(request.getParameter("brand")).thenReturn("VW");
+        Mockito.lenient().when(request.getParameter("model")).thenReturn("Tiguan");
+        Mockito.lenient().when(request.getParameter("year")).thenReturn("2005");
+        Mockito.lenient().when(request.getParameter("price")).thenReturn("3500");
+        Mockito.lenient().when(request.getParameter("mileage")).thenReturn("56000");
+        Mockito.lenient().when(request.getParameter("color")).thenReturn("red");
+
+        List<CarDTO> cars = new ArrayList<>();
+        cars.add(new CarDTO("VW", "Tiguan", 2005, 3500, 56000, "red"));
+        ResponseEntity<List<CarDTO>> expectedResponse = new ResponseEntity<>(cars, HttpStatus.OK);
+
+        Mockito.lenient().when(carService.getCarsBy("VW", "Tiguan", 2005, 3500, 56000, "red")).thenReturn(cars);
+
+        ResponseEntity<List<CarDTO>> response = carController.getCars(request, "VW", request.getParameter("model"), 2005, 3500, 56000, "red");
+
+        Assertions.assertEquals(expectedResponse, response);
     }
 
     @Test
-    public void getCarByBrand_whenCarExists_returnsA200Ok() {
-        ResponseEntity<List<CarDTO>> response = carController.getCarsByBrand("BMW");
-        Assertions.assertEquals(HttpStatus.OK, response.getStatusCode());
+    public void getCarBy_throwsExceptionWhenParametersAreIncorrect() {
+        HttpServletRequest request = mock(HttpServletRequest.class);
+        Mockito.lenient().when(request.getParameter("brand")).thenReturn("VW");
+        Mockito.lenient().when(request.getParameter("model")).thenReturn("Tiguan");
+        Mockito.lenient().when(request.getParameter("year")).thenReturn("2005");
+        Mockito.lenient().when(request.getParameter("price")).thenReturn("3500");
+        Mockito.lenient().when(request.getParameter("mileage")).thenReturn("56000");
+        Mockito.lenient().when(request.getParameter("colour")).thenReturn("red");
+
+        Assertions.assertThrows(InvalidRequestException.class, () -> carController.getCars(request, "VW", "Tiguan", null, null, null, "red"));
     }
 
 }
