@@ -33,25 +33,57 @@ Feature: Car Get Filtered List
     | brand | model | year | price | mileage | colour |
     | Tesla |   A1  | 2019 | 25100 | 10080 | White |
 
-Scenario: the client makes  GET request to the cars/admin/price endpoint and a list of matching cars are returned
-  When a GET request is made to the 'cars/admin?price=45032' endpoint
-  Then it should return a 200 response
-  And the response body should contain the cars
-    | brand | model | year | price | mileage | colour |
-    |   BMW   | A1 |  2015  |  45032  | 10000 | White  |
-
-Scenario: the client makes  GET request to the cars/admin/mileage endpoint and a list of matching cars are returned
-    When a GET request is made to the 'cars/admin?mileage=10000' endpoint
+  Scenario: the client makes  GET request to the cars/admin/price endpoint and a list of matching cars are returned
+    When a GET request is made to the 'cars/admin?price=45032' endpoint
     Then it should return a 200 response
     And the response body should contain the cars
-        | brand | model | year | price | mileage | colour |
-        |   BMW   | A1 |  2015  |  45032  | 10000 | White  |
+      | brand | model | year | price | mileage | colour |
+      |   BMW   | A1 |  2015  |  45032  | 10000 | White  |
 
-Scenario: the client makes  GET request to the cars/admin/colour endpoint and a list of matching cars are returned
-  When a GET request is made to the 'cars/admin?colour=White' endpoint
-  Then it should return a 200 response
-    And the response body should contain the cars
-        | brand | model | year | price | mileage | colour |
-        |   BMW   | A1 |  2015  |  45032  | 10000 | White  |
-        | Tesla |   A1  | 2023 | 45837 | 10400 | White |
-        | Tesla |   A1  | 2019 | 25100 | 10080 | White |
+  Scenario: the client makes  GET request to the cars/admin/mileage endpoint and a list of matching cars are returned
+      When a GET request is made to the 'cars/admin?mileage=10000' endpoint
+      Then it should return a 200 response
+      And the response body should contain the cars
+          | brand | model | year | price | mileage | colour |
+          |   BMW   | A1 |  2015  |  45032  | 10000 | White  |
+
+  Scenario: the client makes  GET request to the cars/admin/colour endpoint and a list of matching cars are returned
+    When a GET request is made to the 'cars/admin?colour=White' endpoint
+    Then it should return a 200 response
+      And the response body should contain the cars
+          | brand | model | year | price | mileage | colour |
+          |   BMW   | A1 |  2015  |  45032  | 10000 | White  |
+          | Tesla |   A1  | 2023 | 45837 | 10400 | White |
+          | Tesla |   A1  | 2019 | 25100 | 10080 | White |
+
+  Scenario: the client makes an invalid GET request to the cars/admin/brand="" endpoint and a list of matching cars are returned
+    When a GET request is made to the 'cars/admin?brand=null' endpoint
+    Then it should return a 400 response
+    And the response body should contain the text '{"description":"Incorrect query parameter provided"}'
+
+  Scenario: the client makes an invalid GET request to the cars/admin/model="" endpoint and a list of matching cars are returned
+    When a GET request is made to the 'cars/admin?model=[blank]' endpoint
+    Then it should return a 400 response
+    And the response body should contain the text '{"description":"Incorrect query parameter provided"}'
+
+  Scenario: the client makes an invalid GET request to the cars/admin/year="" endpoint and a list of matching cars are returned
+    When a GET request is made to the 'cars/admin?year=[blank]' endpoint
+    Then it should return a 400 response
+    And the response body should contain the text '{"description":"Incorrect query parameter provided"}'
+
+  Scenario: the client makes an invalid GET request to the cars/admin/price="" endpoint and a list of matching cars are returned
+    When a GET request is made to the 'cars/admin?price=[blank]' endpoint
+    Then it should return a 400 response
+    And the response body should contain the text '{"description":"Incorrect query parameter provided"}'
+
+  Scenario: the client makes an invalid GET request to the cars/admin/mileage="" endpoint and a list of matching cars are returned
+    When a GET request is made to the 'cars/admin?mileage=[blank]' endpoint
+    Then it should return a 400 response
+    And the response body should contain the text '{"description":"Incorrect query parameter provided"}'
+
+  Scenario: the client makes an invalid GET request to the cars/admin/colour="" endpoint and a list of matching cars are returned
+    When a GET request is made to the 'cars/admin?colour=[blank]' endpoint
+    Then it should return a 400 response
+    And the response body should contain the text '{"description":"Incorrect query parameter provided"}'
+
+

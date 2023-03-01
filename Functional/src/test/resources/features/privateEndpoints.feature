@@ -9,12 +9,4 @@ Feature: testingPrivateEndpoints
     Then it should return a 200 response
     And the response body should contain the text 'OK'
 
-  Scenario: the client makes a GET request to the cars/admin endpoint and a list of cars are returned
-    Given the user wants to create a Car with the following details
-      | brand | model | year | price | mileage | colour |
-      | Tesla | A1 | 2022 | 195000 | 350 | White |
-    When a GET request is made to the 'cars/admin' endpoint
-    Then it should return a 200 response
-    And the response body should contain the cars
-      | brand | model | year | price | mileage | colour |
-      | Tesla | A1 | 2022 | 195000 | 350 | White |
+

@@ -26,17 +26,52 @@ import java.util.Map;
 public class CarController {
     @Autowired
     private CarService carService;
+    @Autowired
+    private ModelMapper modelMapper;
+
 
     public CarController (CarService carService){
         super();
         this.carService = carService;
+//        this.modelMapper = modelMapper;
     }
+
+//    private CarDTO convertToDto(Car car) {
+//        return this.modelMapper.map(car, CarDTO.class);
+//    }
     @PostMapping("/admin")
     public ResponseEntity<Map<String, String>> saveCar(@RequestBody List<@Valid CarDTO> cardto) throws CarAlreadyExistsException {
         if (!cardto.isEmpty()) {
             carService.addCar(cardto);
             return new ResponseEntity<>(Map.of("description", "Database updated"), HttpStatus.CREATED);
         } throw new EmptyListException();
+    }
+
+//    @GetMapping("/admin")
+//    @ResponseBody
+//    public ResponseEntity<List<CarDTO>> getCars() {
+//        List<CarDTO> cars = carService.getAllCars();
+//        return new ResponseEntity<>(cars, HttpStatus.OK);
+//    }
+
+//    @GetMapping("/admin/{id}")
+//    @ResponseBody
+//    public Optional<Car> getCars(@PathVariable("id") String id) {
+//        Optional<Car> car = carService.getCarByID(id);
+//        return car;
+//    }
+
+    @GetMapping("/adminbrand")
+    @ResponseBody
+    public ResponseEntity<List<CarDTO>> getCarsByBrand(@RequestParam(required = false) String brand){
+        List<CarDTO> cars = carService.getCarsByBrand(brand);
+        return new ResponseEntity<>(cars, HttpStatus.OK);
+    }
+    @GetMapping("/adminbrandpath")
+    @ResponseBody
+    public ResponseEntity<List<CarDTO>> getCarsByBrand1(@PathVariable(required = false) String brand){
+        List<CarDTO> cars = carService.getCarsByBrand(brand);
+        return new ResponseEntity<>(cars, HttpStatus.OK);
     }
     @GetMapping("/admin")
     public ResponseEntity<List<CarDTO>> getCars(
