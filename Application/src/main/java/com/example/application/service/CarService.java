@@ -11,9 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 
 @Service
@@ -72,5 +72,65 @@ public class CarService {
             throw new ResourceNotFoundException();
         return Optional.of(car);
     }
+
+    public List<CarDTO> getCarsByBrand(String brand){
+        return this.carRepository.findAllByBrand(brand).stream()
+                .map(this::convertToDto)
+                .collect(Collectors.toList());
+    }
+
+    public List<CarDTO> getCarsBy(String brand, String model, Integer year, Integer price, Integer mileage, String colour){
+        List<CarDTO> carDTOS = this.carRepository.findAll().stream()
+                .map(this::convertToDto)
+                .collect(Collectors.toList());
+        if (brand != null){
+            carDTOS = carDTOS.stream()
+                    .filter(carDTO -> carDTO.getBrand().equals(brand))
+                    .sorted(Comparator.comparing(CarDTO::getBrand))
+                    .collect(Collectors.toList());
+        }
+        if (model != null){
+            carDTOS = carDTOS.stream()
+                    .filter(carDTO -> carDTO.getModel().equals(model))
+                    .sorted(Comparator.comparing(CarDTO::getBrand))
+                    .collect(Collectors.toList());
+        }
+        if (year != null){
+            carDTOS = carDTOS.stream()
+                    .filter(carDTO -> carDTO.getYear() == year)
+                    .sorted(Comparator.comparing(CarDTO::getBrand))
+                    .collect(Collectors.toList());
+
+        }
+        if (price != null){
+            carDTOS = carDTOS.stream()
+                    .filter(carDTO -> carDTO.getPrice() == price)
+                    .sorted(Comparator.comparing(CarDTO::getBrand))
+                    .collect(Collectors.toList());
+
+        }
+        if (mileage != null){
+            carDTOS = carDTOS.stream()
+                    .filter(carDTO -> carDTO.getMileage() == mileage)
+                    .sorted(Comparator.comparing(CarDTO::getBrand))
+                    .collect(Collectors.toList());
+        }
+        if (colour != null){
+            carDTOS = carDTOS.stream()
+                    .filter(carDTO -> carDTO.getColour().equals(colour))
+                    .sorted(Comparator.comparing(CarDTO::getBrand))
+                    .collect(Collectors.toList());
+        }
+        return carDTOS;
+    }
+////        List<Car> carsByBrand = this.carRepository.findCarByBrand(brand);
+////        if (carsByBrand == null){
+////            throw  new ResourceNotFoundException();
+////        }
+//        List<CarDTO> carsByBrand = this.carRepository.findAll().stream()
+//                .map(this::convertToDto)
+//                .collect(Collectors.toList());
+//        return carsByBrand;
+//    }
 }
 

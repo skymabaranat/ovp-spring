@@ -10,12 +10,17 @@ public class ResourceNotFoundException extends RuntimeException {
 
     private String message = "Error message";
 
-    public void ResourceNotFoundException(String message) {
+    public ResourceNotFoundException(String message) {
+        super(message);
         this.message = message;
     }
 
-    public String getMessage() {
+    public String getCurrentMessage() {
         return message;
+    }
+
+    public ResourceNotFoundException(){
+
     }
 
 }
