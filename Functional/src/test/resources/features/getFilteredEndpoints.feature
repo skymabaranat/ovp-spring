@@ -57,7 +57,7 @@ Feature: Car Get Filtered List
           | Tesla |   A1  | 2019 | 25100 | 10080 | White |
 
   Scenario: the client makes an invalid GET request to the cars/admin/brand="" endpoint and a list of matching cars are returned
-    When a GET request is made to the 'cars/admin?brand=null' endpoint
+    When a GET request is made to the 'cars/admin?brand=[blank]' endpoint
     Then it should return a 400 response
     And the response body should contain the text '{"description":"Incorrect query parameter provided"}'
 

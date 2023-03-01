@@ -76,12 +76,12 @@ public class CarController {
     @GetMapping("/admin")
     public ResponseEntity<List<CarDTO>> getCars(
             HttpServletRequest request,
-            @RequestParam(name = "brand", required = false) @Pattern(regexp = "^[a-zA-Z]+$") String brand,
-            @RequestParam(name = "model", required = false) @Pattern(regexp = "^[a-zA-Z0-9]*$") String model,
+            @RequestParam(name = "brand", required = false) String brand,
+            @RequestParam(name = "model", required = false) String model,
             @RequestParam(name = "year", required = false) @Digits(integer = 10, fraction = 0) Integer year,
             @RequestParam(name = "price", required = false) @Digits(integer = 10, fraction = 0) Integer price,
             @RequestParam(name = "mileage", required = false) @Digits(integer = 10, fraction = 0) Integer mileage,
-            @RequestParam(name = "colour", required = false) @Pattern(regexp = "^[a-zA-Z]+$") String colour) {
+            @RequestParam(name = "colour", required = false) String colour) {
 
         if (request.getParameter("brand") != null && !brand.matches("^[a-zA-Z]+$")) {
             throw new InvalidRequestException();
