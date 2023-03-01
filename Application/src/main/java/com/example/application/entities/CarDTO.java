@@ -28,11 +28,11 @@ public class CarDTO {
     @NotBlank(message = "Colour is mandatory")
     public String colour;
 
-//    no args constructor
+    //    no args constructor
     public CarDTO() {
     }
 
-// all args constructor
+    // all args constructor
     public CarDTO(String brand, String model, Integer year, Integer price, Integer mileage, String colour) {
         this.brand = brand;
         this.model = model;
@@ -117,4 +117,3 @@ public class CarDTO {
         return Objects.hash(brand, model, year, price, mileage, colour);
     }
 }
-

@@ -48,4 +48,3 @@ Feature: testingCarEndpoints
 #      | brand | model | year | price | mileage | colour |
 #      | Tesla |   A1  | 2001 | 195000 | 10000 | White |
 
-
