@@ -16,6 +16,7 @@ import io.restassured.response.Response;
 import io.restassured.response.ValidatableResponse;
 import io.restassured.specification.RequestSpecification;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -65,13 +66,18 @@ public class RequestSteps {
     }
 
     @When("a GET request is made to the {string} endpoint")
-    public void a_request_is_made_to_the_endpoint(String endpoint) {
+    public void a_get_request_is_made_to_the_endpoint(String endpoint) {
         testResponse = given().get(endpoint);
     }
 
     @When("a POST request is made to the {string} endpoint")
     public void a_post_request_is_made_to_the_endpoint(String endpoint) {
         testResponse = requestSpecification.post(endpoint);
+    }
+    @When("a PUT request is made to the {string} endpoint with the request body")
+    public void a_put_request_is_made_to_the_endpoint(String endpoint, List<Map<String,String>> dataTable) throws JsonProcessingException {
+        String carBody =  mapper.writeValueAsString(dataTable);
+        testResponse = requestSpecification.put(endpoint, carBody);
     }
 
     @Then("it should return a {int} response")
@@ -98,4 +104,5 @@ public class RequestSteps {
 
         Assertions.assertEquals(expectedResponseBody, testResponse.getBody().asString());
     }
+
 }

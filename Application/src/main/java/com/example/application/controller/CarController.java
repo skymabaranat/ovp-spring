@@ -81,8 +81,7 @@ public class CarController {
             @RequestParam(name = "year", required = false) @Digits(integer = 10, fraction = 0) Integer year,
             @RequestParam(name = "price", required = false) @Digits(integer = 10, fraction = 0) Integer price,
             @RequestParam(name = "mileage", required = false) @Digits(integer = 10, fraction = 0) Integer mileage,
-            @RequestParam(name = "colour", required = false) @Pattern(regexp = "^[a-zA-Z]+$") String colour) {
-
+            @RequestParam(name = "colour", required = false) @Pattern(regexp = "^[a-zA-Z]+$") String colour) throws InvalidRequestException {
         if (request.getParameter("brand") != null && !brand.matches("^[a-zA-Z]+$")) {
             throw new InvalidRequestException();
         }
@@ -105,6 +104,18 @@ public class CarController {
         List<CarDTO> cars = carService.getCarsBy(brand, model, year, price, mileage, colour);
         return new ResponseEntity<>(cars, HttpStatus.OK);
     }
+
+//    @PutMapping("/admin")
+//    public ResponseEntity<Map<String, String>> updateCarDTO (@RequestParam @Valid String brand, @Valid Integer mileage, @RequestBody @Valid CarDTO newCarDTO) throws InvalidRequestException{
+//        carService.updateCarDTO(brand, mileage, newCarDTO);
+//        return new ResponseEntity<>(Map.of("description", "Car updated"), HttpStatus.CREATED);
+//    }
+    @PutMapping("/admin")
+    public ResponseEntity<Map<String, String>> updateCar (@RequestParam @Valid String id, @RequestBody @Valid CarDTO newCarDTO) throws InvalidRequestException{
+        carService.updateCar(id, newCarDTO);
+        return new ResponseEntity<>(Map.of("description", "Car updated"), HttpStatus.OK);
+    }
+
 }
 
 

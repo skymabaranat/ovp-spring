@@ -123,14 +123,42 @@ public class CarService {
         }
         return carDTOS;
     }
-////        List<Car> carsByBrand = this.carRepository.findCarByBrand(brand);
-////        if (carsByBrand == null){
-////            throw  new ResourceNotFoundException();
-////        }
-//        List<CarDTO> carsByBrand = this.carRepository.findAll().stream()
-//                .map(this::convertToDto)
-//                .collect(Collectors.toList());
-//        return carsByBrand;
+
+//    public void updateCarDTO(String brand, Integer mileage, CarDTO newCarDTO) {
+//        Car updateCarDTO = carRepository.findByBrandAndMileage(brand, mileage)
+//                .orElseThrow(ResourceNotFoundException::new);
+//        if (carRepository.existsByBrandAndModelAndYearAndPriceAndMileageAndColour(
+//                newCarDTO.getBrand(), newCarDTO.getModel(), newCarDTO.getYear(), newCarDTO.getPrice(), newCarDTO.getMileage(), newCarDTO.getColour())) {
+//            throw new CarAlreadyExistsException();
+//        } else {
+//            updateCarDTO.setBrand(newCarDTO.getBrand());
+//            updateCarDTO.setModel(newCarDTO.getModel());
+//            updateCarDTO.setYear(newCarDTO.getYear());
+//            updateCarDTO.setPrice(newCarDTO.getPrice());
+//            updateCarDTO.setMileage(newCarDTO.getMileage());
+//            updateCarDTO.setColour(newCarDTO.getColour());
+//            carRepository.save(updateCarDTO);
+//        }
 //    }
+//
+        public void updateCar (String id, CarDTO newCarDTO) {
+        Car updateCarDTO = carRepository.findCarById(id);
+        if (updateCarDTO == null)
+            throw new ResourceNotFoundException();
+        if (carRepository.existsByBrandAndModelAndYearAndPriceAndMileageAndColour(
+                newCarDTO.getBrand(), newCarDTO.getModel(), newCarDTO.getYear(), newCarDTO.getPrice(), newCarDTO.getMileage(), newCarDTO.getColour())){
+            throw new CarAlreadyExistsException();
+        } else {
+            updateCarDTO.setBrand(newCarDTO.getBrand());
+            updateCarDTO.setModel(newCarDTO.getModel());
+            updateCarDTO.setYear(newCarDTO.getYear());
+            updateCarDTO.setPrice(newCarDTO.getPrice());
+            updateCarDTO.setMileage(newCarDTO.getMileage());
+            updateCarDTO.setColour(newCarDTO.getColour());
+            carRepository.save(updateCarDTO);
+        }
+
+    }
 }
+
 
