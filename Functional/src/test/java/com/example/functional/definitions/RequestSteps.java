@@ -16,7 +16,6 @@ import io.restassured.response.Response;
 import io.restassured.response.ValidatableResponse;
 import io.restassured.specification.RequestSpecification;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -104,5 +103,4 @@ public class RequestSteps {
 
         Assertions.assertEquals(expectedResponseBody, testResponse.getBody().asString());
     }
-
 }

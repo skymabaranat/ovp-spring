@@ -28,7 +28,7 @@ public class CarDTO {
     @NotBlank(message = "Colour is mandatory")
     public String colour;
 
-//    no args constructor
+    //    no args constructor
     public CarDTO() {
     }
 
@@ -117,4 +117,3 @@ public class CarDTO {
         return Objects.hash(brand, model, year, price, mileage, colour);
     }
 }
-
