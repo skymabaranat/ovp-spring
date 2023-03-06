@@ -19,14 +19,17 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class CarControllerTest {
@@ -97,6 +100,37 @@ public class CarControllerTest {
         Mockito.lenient().when(request.getParameter("colour")).thenReturn("red");
 
         Assertions.assertThrows(InvalidRequestException.class, () -> carController.getCars(request, "VW", "Tiguan", null, null, null, "red"));
+    }
+
+    @Test
+    public void testUpdateCar() throws Exception {
+        // Create a CarDTO object with updated car data
+        CarDTO updatedCar = new CarDTO("Toyota", "Camry", 2020, 25000, 10000, "Red");
+
+        // Set up the carService to return a successful response when updating a car
+        doNothing().when(carService).updateCar("123", updatedCar);
+
+        // Call the updateCar() method on the controller
+        ResponseEntity<Map<String, String>> response = carController.updateCar("123", updatedCar);
+
+        // Verify that the carService was called with the correct parameters
+        verify(carService).updateCar("123", updatedCar);
+
+        // Verify that the response status is OK (200)
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+
+        // Verify that the response body contains the expected description
+        assertEquals("Car updated", response.getBody().get("description"));
+    }
+
+    @Test
+    public void testHandleMethodArgumentNotValidException() {
+        CarDTO invalidCar = new CarDTO("", "", 4000, 40000, 4000, "" );
+
+        assertThrows(MethodArgumentNotValidException.class,
+                () -> carController.updateCar("123", invalidCar));
+
+        verifyNoInteractions(carService);
     }
 
 }

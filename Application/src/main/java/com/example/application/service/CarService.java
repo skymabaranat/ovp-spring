@@ -159,6 +159,15 @@ public class CarService {
         }
 
     }
+    public void deleteCar(String id) {
+        Car car = carRepository.findCarById(id);
+        if (car == null) {
+            throw new ResourceNotFoundException();
+        }
+        carRepository.delete(car);
+    }
+
+
 }
 
 

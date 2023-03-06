@@ -47,5 +47,10 @@ public class GlobalExceptionHandler {
         return new ResponseEntity(Map.of("description","Incorrect query parameter provided"), HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(value = MethodArgumentNotValidException.class)
+    public ResponseEntity<Map<String, String>> handleMethodArgumentNotValidException(MethodArgumentNotValidException methodArgumentNotValidException) {
+        return new ResponseEntity(Map.of("description","Incorrect car data provided"), HttpStatus.BAD_REQUEST);
+    }
+
 
 }

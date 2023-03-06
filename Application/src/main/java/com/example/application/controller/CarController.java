@@ -117,6 +117,12 @@ public class CarController {
         return new ResponseEntity<>(Map.of("description", "Car updated"), HttpStatus.OK);
     }
 
+    @DeleteMapping("/admin")
+    public ResponseEntity<Map<String, String>> deleteCar(@RequestParam String id) {
+        carService.deleteCar(id);
+        return new ResponseEntity<>(Map.of("description", "Car deleted"), HttpStatus.OK);
+    }
+
 }
 
 

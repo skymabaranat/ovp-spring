@@ -20,6 +20,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 
 import java.util.*;
 import java.util.stream.Stream;
@@ -149,5 +150,28 @@ public class CarServiceTests {
         Assertions.assertThrows(HttpMessageNotReadableException.class, () -> carService.addCar(mockCarList));
     }
 
+    @Test
+    public void updateCar_returnsTheCorrectCar() throws Exception {
+        // Create a CarDTO object with updated car data
+        CarDTO updatedCar = new CarDTO("Toyota", "Camry", 2020, 25000, 10000, "Red");
 
+        // Set up the carRepository to return a dummy Car object when finding a car by ID
+        when(carRepository.findCarById("123")).thenReturn(new Car());
+
+        // Set up the carRepository to return false when checking if a car with the same data already exists
+        when(carRepository.existsByBrandAndModelAndYearAndPriceAndMileageAndColour(
+                updatedCar.getBrand(), updatedCar.getModel(), updatedCar.getYear(),
+                updatedCar.getPrice(), updatedCar.getMileage(), updatedCar.getColour()))
+                .thenReturn(false);
+
+        // Call the updateCar() method on the service
+        carService.updateCar("123", updatedCar);
+
+        // Verify that the carRepository was called with the correct parameters
+        verify(carRepository).findCarById("123");
+        verify(carRepository).existsByBrandAndModelAndYearAndPriceAndMileageAndColour(
+                updatedCar.getBrand(), updatedCar.getModel(), updatedCar.getYear(),
+                updatedCar.getPrice(), updatedCar.getMileage(), updatedCar.getColour());
+        verify(carRepository).save(any(Car.class));
+    }
 }
