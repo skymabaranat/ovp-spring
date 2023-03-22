@@ -15,8 +15,8 @@ import java.util.Map;
 @ControllerAdvice
 public class GlobalExceptionHandler {
     @ExceptionHandler(ResourceNotFoundException.class)
-    public ResponseEntity<Object> resourceNotFoundException(ResourceNotFoundException resourceNotFoundException, HttpServletRequest request) {
-        return new ResponseEntity(resourceNotFoundException.getCurrentMessage(), HttpStatus.BAD_REQUEST);
+    public ResponseEntity<Map<String,String>> resourceNotFoundException(ResourceNotFoundException resourceNotFoundException, HttpServletRequest request) {
+        return new ResponseEntity<>(Map.of("description", resourceNotFoundException.getCurrentMessage()), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(ConstraintViolationException.class)
