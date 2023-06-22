@@ -33,12 +33,8 @@ public class CarController {
     public CarController (CarService carService){
         super();
         this.carService = carService;
-//        this.modelMapper = modelMapper;
     }
 
-//    private CarDTO convertToDto(Car car) {
-//        return this.modelMapper.map(car, CarDTO.class);
-//    }
     @PostMapping("/admin")
     public ResponseEntity<Map<String, String>> saveCar(@RequestBody List<@Valid CarDTO> cardto) throws CarAlreadyExistsException {
         if (!cardto.isEmpty()) {
@@ -46,20 +42,6 @@ public class CarController {
             return new ResponseEntity<>(Map.of("description", "Database updated"), HttpStatus.CREATED);
         } throw new EmptyListException();
     }
-
-//    @GetMapping("/admin")
-//    @ResponseBody
-//    public ResponseEntity<List<CarDTO>> getCars() {
-//        List<CarDTO> cars = carService.getAllCars();
-//        return new ResponseEntity<>(cars, HttpStatus.OK);
-//    }
-
-//    @GetMapping("/admin/{id}")
-//    @ResponseBody
-//    public Optional<Car> getCars(@PathVariable("id") String id) {
-//        Optional<Car> car = carService.getCarByID(id);
-//        return car;
-//    }
 
     @GetMapping("/adminbrand")
     @ResponseBody
@@ -106,11 +88,7 @@ public class CarController {
         return new ResponseEntity<>(cars, HttpStatus.OK);
     }
 
-//    @PutMapping("/admin")
-//    public ResponseEntity<Map<String, String>> updateCarDTO (@RequestParam @Valid String brand, @Valid Integer mileage, @RequestBody @Valid CarDTO newCarDTO) throws InvalidRequestException{
-//        carService.updateCarDTO(brand, mileage, newCarDTO);
-//        return new ResponseEntity<>(Map.of("description", "Car updated"), HttpStatus.CREATED);
-//    }
+
     @PutMapping("/admin")
     public ResponseEntity<Map<String, String>> updateCar (@RequestParam @Valid String id, @RequestBody @Valid CarDTO newCarDTO) throws InvalidRequestException{
         carService.updateCar(id, newCarDTO);
