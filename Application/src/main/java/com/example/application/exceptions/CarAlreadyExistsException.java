@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
 public class CarAlreadyExistsException extends RuntimeException{
 
-    private String message = "Error message";
+    private String message = "Error message Car already exists";
 
     public CarAlreadyExistsException(String message) {
         super(message);

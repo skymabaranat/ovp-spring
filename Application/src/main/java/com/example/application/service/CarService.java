@@ -11,9 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 
 @Service
@@ -72,5 +72,102 @@ public class CarService {
             throw new ResourceNotFoundException();
         return Optional.of(car);
     }
+
+    public List<CarDTO> getCarsByBrand(String brand){
+        return this.carRepository.findAllByBrand(brand).stream()
+                .map(this::convertToDto)
+                .collect(Collectors.toList());
+    }
+
+    public List<CarDTO> getCarsBy(String brand, String model, Integer year, Integer price, Integer mileage, String colour){
+        List<CarDTO> carDTOS = this.carRepository.findAll().stream()
+                .map(this::convertToDto)
+                .collect(Collectors.toList());
+        if (brand != null){
+            carDTOS = carDTOS.stream()
+                    .filter(carDTO -> carDTO.getBrand().equals(brand))
+                    .sorted(Comparator.comparing(CarDTO::getBrand))
+                    .collect(Collectors.toList());
+        }
+        if (model != null){
+            carDTOS = carDTOS.stream()
+                    .filter(carDTO -> carDTO.getModel().equals(model))
+                    .sorted(Comparator.comparing(CarDTO::getBrand))
+                    .collect(Collectors.toList());
+        }
+        if (year != null){
+            carDTOS = carDTOS.stream()
+                    .filter(carDTO -> carDTO.getYear() == year)
+                    .sorted(Comparator.comparing(CarDTO::getBrand))
+                    .collect(Collectors.toList());
+
+        }
+        if (price != null){
+            carDTOS = carDTOS.stream()
+                    .filter(carDTO -> carDTO.getPrice() == price)
+                    .sorted(Comparator.comparing(CarDTO::getBrand))
+                    .collect(Collectors.toList());
+
+        }
+        if (mileage != null){
+            carDTOS = carDTOS.stream()
+                    .filter(carDTO -> carDTO.getMileage() == mileage)
+                    .sorted(Comparator.comparing(CarDTO::getBrand))
+                    .collect(Collectors.toList());
+        }
+        if (colour != null){
+            carDTOS = carDTOS.stream()
+                    .filter(carDTO -> carDTO.getColour().equals(colour))
+                    .sorted(Comparator.comparing(CarDTO::getBrand))
+                    .collect(Collectors.toList());
+        }
+        return carDTOS;
+    }
+
+//    public void updateCarDTO(String brand, Integer mileage, CarDTO newCarDTO) {
+//        Car updateCarDTO = carRepository.findByBrandAndMileage(brand, mileage)
+//                .orElseThrow(ResourceNotFoundException::new);
+//        if (carRepository.existsByBrandAndModelAndYearAndPriceAndMileageAndColour(
+//                newCarDTO.getBrand(), newCarDTO.getModel(), newCarDTO.getYear(), newCarDTO.getPrice(), newCarDTO.getMileage(), newCarDTO.getColour())) {
+//            throw new CarAlreadyExistsException();
+//        } else {
+//            updateCarDTO.setBrand(newCarDTO.getBrand());
+//            updateCarDTO.setModel(newCarDTO.getModel());
+//            updateCarDTO.setYear(newCarDTO.getYear());
+//            updateCarDTO.setPrice(newCarDTO.getPrice());
+//            updateCarDTO.setMileage(newCarDTO.getMileage());
+//            updateCarDTO.setColour(newCarDTO.getColour());
+//            carRepository.save(updateCarDTO);
+//        }
+//    }
+//
+        public void updateCar (String id, CarDTO newCarDTO) {
+        Car updateCarDTO = carRepository.findCarById(id);
+        if (updateCarDTO == null)
+            throw new ResourceNotFoundException();
+        if (carRepository.existsByBrandAndModelAndYearAndPriceAndMileageAndColour(
+                newCarDTO.getBrand(), newCarDTO.getModel(), newCarDTO.getYear(), newCarDTO.getPrice(), newCarDTO.getMileage(), newCarDTO.getColour())){
+            throw new CarAlreadyExistsException();
+        } else {
+            updateCarDTO.setBrand(newCarDTO.getBrand());
+            updateCarDTO.setModel(newCarDTO.getModel());
+            updateCarDTO.setYear(newCarDTO.getYear());
+            updateCarDTO.setPrice(newCarDTO.getPrice());
+            updateCarDTO.setMileage(newCarDTO.getMileage());
+            updateCarDTO.setColour(newCarDTO.getColour());
+            carRepository.save(updateCarDTO);
+        }
+
+    }
+    public void deleteCar(String id) {
+        Car car = carRepository.findCarById(id);
+        if (car == null) {
+            throw new ResourceNotFoundException();
+        }
+        carRepository.delete(car);
+    }
+
+
 }
+
 

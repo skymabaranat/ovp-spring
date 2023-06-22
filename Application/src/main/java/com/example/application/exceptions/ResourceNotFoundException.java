@@ -8,14 +8,19 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
 public class ResourceNotFoundException extends RuntimeException {
 
-    private String message = "Error message";
+    private String message = "Resource not found";
 
-    public void ResourceNotFoundException(String message) {
+    public ResourceNotFoundException(String message) {
+        super(message);
         this.message = message;
     }
 
-    public String getMessage() {
+    public String getCurrentMessage() {
         return message;
+    }
+
+    public ResourceNotFoundException(){
+
     }
 
 }
